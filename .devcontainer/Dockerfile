@@ -1,5 +1,5 @@
 # Use a clean Ubuntu image
-FROM ubuntu:22.04
+FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
 # Install basic dependencies (optional)
 RUN apt-get update && apt-get install -y \
@@ -28,4 +28,6 @@ ENV PATH="/opt/conda/bin:$PATH"
 
 # Create and activate default Conda environment
 RUN conda create -n lerobot python=3.10 -y && \
-    echo "conda activate lerobot" >> ~/.bashrc
+    echo "conda activate lerobot" >> ~/.bashrc 
+
+    
