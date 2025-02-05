@@ -1,7 +1,9 @@
 # Logging
 logs
 tmp
+temp
 wandb
+outputs
 
 # Data
 data
