@@ -1,4 +1,4 @@
-import gym
+import gymnasium
 import numpy as np
 import torch
 import torch.nn as nn
@@ -48,16 +48,11 @@ class TOLD(nn.Module):
         return z, z_next, r_hat, q_hat, a_hat
 
 
-
-
 # Environment setup
-env = gym.make('CartPole-v1')
+env = gymnasium.make('CartPole-v1')
 state_dim = env.observation_space.shape[0]
 action_dim = 1  # Simplified to continuous action in [-1, 1]
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-
-
 
 # Model and optimizer
 model = TOLD(state_dim, action_dim).to(device)
@@ -97,11 +92,11 @@ def plan(model, s, horizon=H, n_samples=N, n_elite=K, n_iter=J):
         topk_actions = actions[topk_idx]
         weights = torch.exp(0.5 * returns[topk_idx])  # Temperature = 0.5
         weights /= weights.sum()
-        mu = (weights.unsqueeze(-1) * topk_actions).sum(dim=0)
-        sigma = torch.sqrt(((topk_actions - mu)**2 * weights.unsqueeze(-1)).sum(dim=0))
+        mu = (weights.unsqueeze(-1).unsqueeze(-1) * topk_actions).sum(dim=0)
+        sigma = torch.sqrt(((topk_actions - mu)**2 * weights.unsqueeze(-1).unsqueeze(-1)).sum(dim=0))
         sigma = torch.clamp(sigma, min=0.05)  # Exploration constraint
     
-    return (mu[0] + sigma[0] * torch.randn(action_dim).to(device)).cpu().numpy()
+    return (mu[0] + sigma[0] * torch.randn(action_dim, device=device)).detach().cpu().int().item()
 
 
 total_steps = 0
@@ -117,8 +112,10 @@ for episode in range(500):
         else:
             a = plan(model, s)  # Plan with TD-MPC
         
-        a = np.clip(a, -1, 1)  # Simplified action range
-        s_next, r, done, _ = env.step(a) 
+        a = np.clip(a, 0, 1)  # Simplified action range
+        print(a)
+
+        s_next, r, done, _,_ = env.step(a) 
         buffer.append((s, a, r, s_next))
         episode_reward += r
         s = s_next
