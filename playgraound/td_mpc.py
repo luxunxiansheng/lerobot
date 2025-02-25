@@ -64,7 +64,7 @@ optimizer = optim.Adam(model.parameters(), lr=1e-3)
 buffer = deque(maxlen=BUFFER_SIZE)
 
 # MPPI Planning
-def plan(model, s, horizon=H, n_samples=N, n_elite=K, n_iter=J):
+def plan(model: TOLD, s: np.ndarray, horizon: int = H, n_samples: int = N, n_elite: int = K, n_iter: int = J) -> int:
     s_tensor = torch.FloatTensor(s).unsqueeze(0).to(device)
     z = model.state_encoder(s_tensor)
     mu, sigma = torch.zeros(horizon, action_dim).to(device), 2 * torch.ones(horizon, action_dim).to(device)
@@ -113,8 +113,7 @@ for episode in range(500):
             a = plan(model, s)  # Plan with TD-MPC
         
         a = np.clip(a, 0, 1)  # Simplified action range
-        print(a)
-
+        
         s_next, r, done, _,_ = env.step(a) 
         buffer.append((s, a, r, s_next))
         episode_reward += r
