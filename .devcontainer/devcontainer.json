@@ -12,9 +12,7 @@
     "runArgs": [
       "--env-file=.devcontainer/devcontainer.env",
       "--runtime=nvidia",
-      "--gpus=all",
-      "--shm-size=10gb",
-      "--cap-add=SYS_PTRACE",
+      "-it",
       "--network", "host"
     ],
     "customizations": {
