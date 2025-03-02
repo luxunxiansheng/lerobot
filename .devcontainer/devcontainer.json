@@ -13,6 +13,8 @@
       "--env-file=.devcontainer/devcontainer.env",
       "--runtime=nvidia",
       "-it",
+      "--device=/dev/ttyACM_follower:/dev/ttyACM_follower",
+      "--device=/dev/ttyACM_leader:/dev/ttyACM_leader",
       "--network", "host"
     ],
     "customizations": {
