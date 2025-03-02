@@ -1,10 +1,11 @@
 {
-    "name": "Lerbot",
+    "name": "Lerbot-so100",
     "build": {
       "context": "..",
       "dockerfile": "../docker/lerobot-nano-super/Dockerfile"
     },
     "containerEnv": {
+      "PYTHONPATH": "/workspaces/lerobot:${PYTHONPATH}",
       "http_proxy": "${localEnv:http_proxy}",
       "https_proxy": "${localEnv:https_proxy}",
       "no_proxy": "${localEnv:no_proxy}"
