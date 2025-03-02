@@ -50,5 +50,5 @@
       }
     },
   
-    "postStartCommand": ""
+    "postStartCommand": "chmod 666 /dev/ttyACM_follower && chmod 666 /dev/ttyACM_leader"
   }
