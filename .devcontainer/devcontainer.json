@@ -16,6 +16,10 @@
       "-it",
       "--device=/dev/ttyACM_follower:/dev/ttyACM_follower",
       "--device=/dev/ttyACM_leader:/dev/ttyACM_leader",
+      "--device=/dev/video0:/dev/video0",
+      "--device=/dev/video1:/dev/video1",
+      "--device=/dev/video2:/dev/video2",
+      "--device=/dev/video3:/dev/video3",
       "--network", "host"
     ],
     "customizations": {
@@ -51,5 +55,5 @@
       }
     },
   
-    "postStartCommand": "chmod 666 /dev/ttyACM_follower && chmod 666 /dev/ttyACM_leader"
+    "postStartCommand": "chmod 666 /dev/ttyACM_follower && chmod 666 /dev/ttyACM_leader && chmod 666 /dev/video0 && chmod 666 /dev/video1 && chmod 666 /dev/video2 && chmod 666 /dev/video3"
   }
